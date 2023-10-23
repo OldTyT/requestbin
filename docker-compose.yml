@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+    app:
+        restart: always
+        build: .
+        environment:
+            REALM: prod
+            REDIS_URL: "//redis:6379"
+            BIN_TTL: "172800"
+        depends_on:
+            - redis
+        ports:
+            - "8000:8000"
+
+    redis:
+        restart: always
+        image: redis:2.8.6

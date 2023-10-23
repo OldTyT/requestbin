@@ -1,0 +1,3 @@
+ecursive-include requestbin *.*
+graft requestbin
+global-exclude __pyache__
