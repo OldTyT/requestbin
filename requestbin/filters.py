@@ -1,9 +1,10 @@
 import datetime
-from dateutil.parser import parse
 import hashlib  # noqa: F401
 import os  # noqa: F401
 import time
 import urllib  # noqa: F401
+
+from dateutil.parser import parse
 
 
 def approximate_time(ts):
@@ -44,13 +45,7 @@ def friendly_size(bytes):
 
 def status_class(status_code):
     status_code = str(status_code or "0")
-    lookup = {
-        "0": "",
-        "2": "ok",
-        "3": "info",
-        "4": "warning",
-        "5": "error"
-    }
+    lookup = {"0": "", "2": "ok", "3": "info", "4": "warning", "5": "error"}
 
     return lookup.get(status_code[0], "")
 
@@ -102,15 +97,15 @@ def to_qs(params_dict):
     if not params_dict or not isinstance(params_dict, dict):
         return ""
 
-    qs = u"?" if params_dict else u""
+    qs = "?" if params_dict else ""
 
     for k, v in params_dict.items():
         if len(qs) > 1:  # more than just the ?
-            qs = qs + u"&"
+            qs = qs + "&"
         if v is None:
             qs = qs + k
         else:
-            qs = qs + u"{}={}".format(k, v)
+            qs = qs + "{}={}".format(k, v)
     return qs
 
 

@@ -1,17 +1,15 @@
 import copy
-import json
-import time
 import datetime
+import json
 import os
 import re  # noqa: F401
+import time
 
 import msgpack
 
-from .util import random_color
-from .util import tinyid
-from .util import solid16x16gif_datauri
+from requestbin import cfg
 
-from requestbin import config
+from .util import random_color, solid16x16gif_datauri, tinyid
 
 
 class Bin(object):
@@ -32,17 +30,18 @@ class Bin(object):
             private=self.private,
             color=self.color,
             name=self.name,
-            request_count=self.request_count)
+            request_count=self.request_count,
+        )
 
     def dump(self):
         o = copy.copy(self.__dict__)
-        o['requests'] = [r.dump() for r in self.requests]
+        o["requests"] = [r.dump() for r in self.requests]
         return msgpack.dumps(o)
 
     @staticmethod
     def load(data):
         o = msgpack.loads(data)
-        o['requests'] = [Request.load(r) for r in o['requests']]
+        o["requests"] = [Request.load(r) for r in o["requests"]]
         b = Bin()
         b.__dict__ = o
         return b
@@ -53,20 +52,22 @@ class Bin(object):
 
     def add(self, request):
         self.requests.insert(0, Request(request))
-        if len(self.requests) > config.MAX_REQUESTS:
-            for _ in xrange(config.MAX_REQUESTS, len(self.requests)):
-                self.requests.pop(config.MAX_REQUESTS)
+        if len(self.requests) > cfg.max_requests:
+            for _ in xrange(cfg.max_requests, len(self.requests)):
+                self.requests.pop(cfg.max_requests)
 
 
 class Request(object):
-    ignore_headers = config.IGNORE_HEADERS
-    max_raw_size = config.MAX_RAW_SIZE
+    ignore_headers = cfg.ignore_headers
+    max_raw_size = cfg.max_raw_size
 
     def __init__(self, input=None):
         if input:
             self.id = tinyid(6)
             self.time = time.time()
-            self.remote_addr = input.headers.get('X-Forwarded-For', input.remote_addr)  # noqa: E501
+            self.remote_addr = input.headers.get(
+                "X-Forwarded-For", input.remote_addr
+            )  # noqa: E501
             self.method = input.method
             self.headers = dict(input.headers)
 
@@ -83,14 +84,14 @@ class Request(object):
             self.path = input.path
             self.content_type = self.headers.get("Content-Type", "")
 
-            self.raw = input.environ.get('raw')
+            self.raw = input.environ.get("raw")
             self.content_length = len(self.raw)
 
             # for header in self.ignore_headers:
             #     self.raw = re.sub(r'{}: [^\n]+\n'.format(header),
             #                         '', self.raw, flags=re.IGNORECASE)
             if self.raw and len(self.raw) > self.max_raw_size:
-                self.raw = self.raw[0:self.max_raw_size]
+                self.raw = self.raw[0 : self.max_raw_size]
 
     def to_dict(self):
         return dict(
@@ -120,7 +121,7 @@ class Request(object):
         r = Request()
         try:
             r.__dict__ = msgpack.loads(data, encoding="utf-8")
-        except (UnicodeDecodeError):
+        except UnicodeDecodeError:
             r.__dict__ = msgpack.loads(data, encoding="ISO-8859-1")
 
         return r

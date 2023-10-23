@@ -1,12 +1,12 @@
-import time
 import operator  # noqa: F401
-
-from ..models import Bin
+import time
 
 from requestbin import config
 
+from ..models_data import Bin
 
-class MemoryStorage():
+
+class MemoryStorage:
     cleanup_interval = config.CLEANUP_INTERVAL
 
     def __init__(self):

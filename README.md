@@ -1,4 +1,10 @@
-# Requestbin
+# Requestbin [WIP]
+
+# Docker develop
+
+```
+docker run --rm --workdir /app -v ".":"/app" --entrypoint ash -it test:local
+```
 
 ## Description
 

@@ -1,16 +1,18 @@
-import feedparser  # noqa: F401
-import time  # noqa: F401
 import re
-from requestbin import config
+import time  # noqa: F401
 
-bin_ttl = config.BIN_TTL
-storage_backend = config.STORAGE_BACKEND
+import feedparser  # noqa: F401
+
+from requestbin import cfg
+
+bin_ttl = cfg.bin_ttl
+storage_backend = cfg.storage_backend
 
 storage_module, storage_class = storage_backend.rsplit('.', 1)
 
 try:
     klass = getattr(__import__(storage_module, fromlist=[storage_class]), storage_class)  # noqa: E501
-except ImportError, e:
+except ImportError as e:
     raise ImportError("Unable to load storage backend '{}': {}".format(storage_backend, e))  # noqa: E501
 
 db = klass()
