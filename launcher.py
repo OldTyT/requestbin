@@ -90,6 +90,9 @@ if __name__ == '__main__':
         "accesslog": "-",
         "errorlog": "-",
         "worker_class": "sync",
+        "proxy-protocol": "",
+        "proxy-allow-from": "*",
+        "forwarded-allow-ips": "*",
         "logger_class": StubbedGunicornLogger
     }
 
