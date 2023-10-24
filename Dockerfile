@@ -14,5 +14,6 @@ COPY --from=builder /app/wheels /wheels
 RUN pip install --no-cache /wheels/*
 
 COPY requestbin/ /app/requestbin
+COPY launcher.py /app
 
-ENTRYPOINT gunicorn -b 0.0.0.0:8000 --worker-class gevent --workers 2 --max-requests 1000 requestbin:app
+ENTRYPOINT python3 launcher.py

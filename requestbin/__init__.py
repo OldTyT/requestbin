@@ -4,6 +4,7 @@ from flask import Flask
 from flask_cors import CORS
 
 from .models.configs import GlobalConfigs
+from .logger import logger
 
 cfg = GlobalConfigs()
 
