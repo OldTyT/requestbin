@@ -49,6 +49,8 @@ Cf-Visitor
 Cf-Ray
 Cf-Ipcountry
 Cf-Connecting-Ip
+X-Forwarded-Host
+X-Forwarded-Server
 """.split(
         "\n"
     )[

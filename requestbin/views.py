@@ -1,6 +1,8 @@
 import urllib  # noqa: F401
 from datetime import datetime, timedelta
 
+from loguru import logger
+
 from flask import (
     #escape,
     make_response,
@@ -65,7 +67,7 @@ def bin(name):
     else:
         db.create_request(bin, request)
         resp = make_response("ok\n")
-        resp.headers["Sponsored-By"] = "https://www.runscope.com"
+        resp.headers["Sponsored-By"] = "https://oldtyt.xyz"
         return resp
 
 
