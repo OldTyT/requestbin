@@ -18,7 +18,7 @@ class RedisStorage:
             host=cfg.redis_host,
             port=cfg.redis_port,
             db=cfg.redis_db,
-            password=cfg.redis_password,
+            password=cfg.redis_password.get_secret_value(),
         )
 
     def _key(self, name):
