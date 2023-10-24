@@ -54,6 +54,10 @@ X-Real-Ip
 X-Forwarded-Proto
 X-Via
 X-Forwarded-Port
+Cf-Visitor
+Cf-Ray
+Cf-Ipcountry
+Cf-Connecting-Ip
 """.split(
         "\n"
     )[
