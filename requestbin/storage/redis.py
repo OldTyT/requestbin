@@ -52,7 +52,9 @@ class RedisStorage:
 
     def avg_req_size(self):
         info = self.redis.info()
-        return info["used_memory"] / info["db0"]["keys"] / 1024
+        if f"db{cfg.redis_db}" not in info:
+            return 0
+        return info["used_memory"] / info[f"db{cfg.redis_db}"]["keys"] / 1024
 
     def lookup_bin(self, name):
         key = self._key(name)

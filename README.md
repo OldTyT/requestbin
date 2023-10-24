@@ -3,7 +3,9 @@
 # Docker develop
 
 ```
-docker run --rm --workdir /app -v ".":"/app" --entrypoint ash -it test:local
+docker build -t test:local .
+docker run --rm --name tester --workdir /app -v ".":"/app" --entrypoint ash -it test:local
+docker exec -ti tester ash
 ```
 
 ## Description

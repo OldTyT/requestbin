@@ -12,6 +12,16 @@ from requestbin import cfg
 from .util import random_color, solid16x16gif_datauri, tinyid
 
 
+def from_byte(obj):
+    new_obj = {}
+    for key, value in obj.items():
+        if isinstance(key, bytes):
+            key = key.decode("utf-8")
+        if isinstance(value, bytes):
+            value = value.decode("utf-8")
+        new_obj[key] = value
+    return new_obj
+
 class Bin(object):
     def __init__(self, private=False):
         self.created = time.time()
@@ -41,6 +51,8 @@ class Bin(object):
     @staticmethod
     def load(data):
         o = msgpack.loads(data)
+        o = from_byte(o)
+        # Converting from byte
         o["requests"] = [Request.load(r) for r in o["requests"]]
         b = Bin()
         b.__dict__ = o
@@ -84,14 +96,15 @@ class Request(object):
             self.path = input.path
             self.content_type = self.headers.get("Content-Type", "")
 
-            self.raw = input.environ.get("raw")
-            self.content_length = len(self.raw)
+            self.content_length = input.content_length
+            if self.content_length is None:
+                self.content_length = 0
 
             # for header in self.ignore_headers:
             #     self.raw = re.sub(r'{}: [^\n]+\n'.format(header),
             #                         '', self.raw, flags=re.IGNORECASE)
-            if self.raw and len(self.raw) > self.max_raw_size:
-                self.raw = self.raw[0 : self.max_raw_size]
+            # if self.raw and len(self.raw) > self.max_raw_size: ############################################################
+            #     self.raw = self.raw[0 : self.max_raw_size]     ############################################################
 
     def to_dict(self):
         return dict(

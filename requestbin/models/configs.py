@@ -22,7 +22,7 @@ class GlobalConfigs(BaseSettings):
     redis_host :str = os.getenv("REDIS_HOST","localhost")
     redis_port:int = os.getenv("REDIS_PORT",6379)
     redis_password : SecretStr = os.getenv("REDIS_PASSWORD", None)
-    redis_db :int= os.getenv("REDIS_DB", 9)
+    redis_db :int= os.getenv("REDIS_DB", 0)
     redis_prefix :str= os.getenv("REDIS_PREFIX", "requestbin")
     bin_ttl : int = os.getenv("BIN_TTL", bin_ttl_default)
     root_url : str = os.getenv("ROOT_URL", "http://localhost:" + str(port_number))
@@ -35,11 +35,11 @@ class GlobalConfigs(BaseSettings):
     ignore_headers = []
     root_url = os.getenv("ROOT_URL", "http://requestb.in")
     bin_ttl : int= os.getenv("BIN_TTL", bin_ttl_default)
-    redis_url : str= os.getenv("REDIS_URL")
-    url_parts = urlparse(redis_url)
-    redis_host = url_parts.hostname
-    redis_port = url_parts.port
-    redis_password = url_parts.password
+    #redis_url : str= os.getenv("REDIS_URL")
+    #url_parts = urlparse(redis_url)
+    #redis_host = url_parts.hostname
+    #redis_port = url_parts.port
+    #redis_password = url_parts.password
     # redis_db = url_parts.fragment
     bugsnag_key : SecretStr = os.getenv("BUGSNAG_KEY", bugsnag_key)
     storage_backend = "requestbin.storage.redis.RedisStorage"
